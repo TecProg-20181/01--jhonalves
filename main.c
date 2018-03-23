@@ -16,9 +16,14 @@ typedef struct _image {
     unsigned int height;
 } Image;
 
-
 int max(int a, int b) {
     if (a > b)
+        return a;
+    return b;
+}
+
+int min(int a, int b) {
+    if (a < b)
         return a;
     return b;
 }
@@ -126,6 +131,17 @@ Image cortar_imagem(Image img, int x, int y, int w, int h) {
     return cortada;
 }
 
+int check_p (int p) {
+    int menor_r = 0;
+    if (p < 255){
+        menor_r = p;
+    }
+    else {
+        menor_r = 255;
+    }
+
+    return menor_r;
+}
 
 int main() {
     Image img;
@@ -164,20 +180,22 @@ int main() {
                 for (unsigned int x = 0; x < img.height; ++x) {
                     for (unsigned int j = 0; j < img.width; ++j) {
                         unsigned short int pixel[3];
+                        int menor_r = 0;
+
                         pixel[0] = img.pixel[x][j][0];
                         pixel[1] = img.pixel[x][j][1];
                         pixel[2] = img.pixel[x][j][2];
 
                         int p =  pixel[0] * .393 + pixel[1] * .769 + pixel[2] * .189;
-                        int menor_r = (255 >  p) ? p : 255;
+                        menor_r = check_p(p);
                         img.pixel[x][j][0] = menor_r;
 
                         p =  pixel[0] * .349 + pixel[1] * .686 + pixel[2] * .168;
-                        menor_r = (255 >  p) ? p : 255;
+                        menor_r = check_p(p);
                         img.pixel[x][j][1] = menor_r;
 
                         p =  pixel[0] * .272 + pixel[1] * .534 + pixel[2] * .131;
-                        menor_r = (255 >  p) ? p : 255;
+                        menor_r = check_p(p);
                         img.pixel[x][j][2] = menor_r;
                     }
                 }
